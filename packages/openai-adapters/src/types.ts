@@ -48,7 +48,6 @@ export const OpenAIConfigSchema = BasePlusConfig.extend({
     z.literal("cerebras"),
     z.literal("kindo"),
     z.literal("msty"),
-    z.literal("openrouter"),
     z.literal("sambanova"),
     z.literal("text-gen-webui"),
     z.literal("vllm"),
@@ -58,6 +57,11 @@ export const OpenAIConfigSchema = BasePlusConfig.extend({
   ]),
 });
 export type OpenAIConfig = z.infer<typeof OpenAIConfigSchema>;
+
+export const OpenRouterConfigSchema = OpenAIConfigSchema.extend({
+  provider: z.literal("openrouter")
+});
+export type OpenRouterConfig = z.infer<typeof OpenRouterConfigSchema>;
 
 export const MoonshotConfigSchema = OpenAIConfigSchema.extend({
   provider: z.literal("moonshot"),
@@ -105,6 +109,7 @@ export type JinaConfig = z.infer<typeof JinaConfigSchema>;
 // Discriminated union
 export const LLMConfigSchema = z.discriminatedUnion("provider", [
   OpenAIConfigSchema,
+  OpenRouterConfigSchema,
   MoonshotConfigSchema,
   DeepseekConfigSchema,
   CohereConfigSchema,

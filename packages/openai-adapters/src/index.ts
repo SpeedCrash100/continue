@@ -10,6 +10,7 @@ import { JinaApi } from "./apis/Jina.js";
 import { MockApi } from "./apis/Mock.js";
 import { MoonshotApi } from "./apis/Moonshot.js";
 import { OpenAIApi } from "./apis/OpenAI.js";
+import { OpenRouterApi } from "./apis/OpenRouter.js";
 import { LLMConfig, OpenAIConfigSchema } from "./types.js";
 
 dotenv.config();
@@ -28,6 +29,8 @@ export function constructLlmApi(config: LLMConfig): BaseLlmApi | undefined {
   switch (config.provider) {
     case "openai":
       return new OpenAIApi(config);
+    case "openrouter":
+      return new OpenRouterApi(config);
     case "azure":
       return new AzureOpenAIApi(config);
     case "cohere":
@@ -58,8 +61,6 @@ export function constructLlmApi(config: LLMConfig): BaseLlmApi | undefined {
       return openAICompatible("https://api.sambanova.ai/v1/", config);
     case "text-gen-webui":
       return openAICompatible("http://127.0.0.1:5000/v1/", config);
-    case "openrouter":
-      return openAICompatible("https://openrouter.ai/api/v1/", config);
     case "cerebras":
       return openAICompatible("https://api.cerebras.ai/v1/", config);
     case "kindo":
@@ -103,9 +104,10 @@ export {
   type Completion,
   type CompletionCreateParams,
   type CompletionCreateParamsNonStreaming,
-  type CompletionCreateParamsStreaming,
+  type CompletionCreateParamsStreaming
 } from "openai/resources/index";
 
 // export
 export type { BaseLlmApi } from "./apis/base.js";
 export type { LLMConfig } from "./types.js";
+
